@@ -25,7 +25,7 @@ public class UserServiceV1 {
     @Transactional(readOnly = true)
     public UserResponse findUser(Long userId) {
         User user = getUserById(userId);
-        return UserResponse.fromEntityV1(user);
+        return UserResponse.fromEntityV2(user);
     }
 
     @Transactional
