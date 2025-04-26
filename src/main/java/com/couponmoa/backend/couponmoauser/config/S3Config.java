@@ -1,9 +1,8 @@
 package com.couponmoa.backend.couponmoauser.config;
 
-import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.InstanceProfileCredentialsProvider;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,18 +26,19 @@ public class S3Config {
 
     @Bean
     public AmazonS3 amazonS3() {
-        AmazonS3ClientBuilder builder = AmazonS3ClientBuilder.standard().withRegion(region);
+        AmazonS3ClientBuilder builder = AmazonS3ClientBuilder.standard()
+                .withRegion(region);
 
         if (useInstanceProfile) {
-            // EC2에 부여된 IAM Role 기반 인증 (prod)
-            builder = builder.withCredentials(new InstanceProfileCredentialsProvider(false));
+            // 배포 환경: Fargate, IAM Role 사용
+            builder = builder.withCredentials(DefaultAWSCredentialsProviderChain.getInstance());
         } else {
-            // 로컬에서 access-key/secret-key 사용
-            AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-            builder = builder.withCredentials(new AWSStaticCredentialsProvider(credentials));
+            // 로컬 환경: access-key/secret-key 직접 사용
+            builder = builder.withCredentials(new AWSStaticCredentialsProvider(
+                    new BasicAWSCredentials(accessKey, secretKey)
+            ));
         }
 
         return builder.build();
     }
 }
-
