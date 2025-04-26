@@ -40,6 +40,6 @@ public class UserResponse {
     }
 
     private static String generateCdnImageUrl(String imageKey) {
-        return "https://d21i1tq0rni1rm.cloudfront.net/" + imageKey; // cloudfront
+        return "https://d3v4s62h114hel.cloudfront.net/" + imageKey; // cloudfront
     }
 }
