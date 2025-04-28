@@ -51,7 +51,7 @@ public class SecurityConfig {
                                 "/actuator/**",
                                 "/swagger-resources/**",
                                 "/webjars/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/notifications/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/user-coupons/expire").permitAll()
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
                 )
