@@ -38,13 +38,13 @@ jobs:
         run: ./gradlew generateProto
       
       - name: Run tests
-        run: ./gradlew test
+        run: SPRING_PROFILES_ACTIVE=test ./gradlew clean test
       
       - name: Generate REST Docs (asciidoctor)
-        run: ./gradlew asciidoctor
+        run: SPRING_PROFILES_ACTIVE=test ./gradlew asciidoctor
       
       - name: Copy REST Docs to static resources
-        run: ./gradlew copyDocument
+        run: SPRING_PROFILES_ACTIVE=test ./gradlew copyDocument
       
       - name: Build project
         run: ./gradlew build -x test
