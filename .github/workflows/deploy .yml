@@ -33,9 +33,21 @@ jobs:
       
       - name: Grant execute permission to gradlew
         run: chmod +x ./gradlew
-
-      - name: Build with proto generation
-        run: ./gradlew generateProto build -x test
+      
+      - name: Generate Proto Sources
+        run: ./gradlew generateProto
+      
+      - name: Run tests
+        run: ./gradlew test
+      
+      - name: Generate REST Docs (asciidoctor)
+        run: ./gradlew asciidoctor
+      
+      - name: Copy REST Docs to static resources
+        run: ./gradlew copyDocument
+      
+      - name: Build project
+        run: ./gradlew build -x test
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
