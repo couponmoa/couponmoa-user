@@ -124,8 +124,9 @@ sourceSets {
     }
 }
 
-tasks.processResources {
+tasks.named('processResources') {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    dependsOn tasks.named('copyDocument')
 }
 
 tasks.named('compileJava') {
