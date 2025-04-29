@@ -1,4 +1,4 @@
-= CouponMoa 전체 API 문서
+= CouponMoa User API 문서
 :toc: left
 :toclevels: 2
 :sectlinks:
