@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.4.4'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'com.google.protobuf' version '0.9.3'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
 
 group = 'com.couponmoa.backend'
@@ -18,6 +19,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExt
 }
 
 repositories {
@@ -27,6 +29,7 @@ repositories {
 ext {
     grpcVersion = '1.56.0'
     protobufVersion = '3.23.2'
+    snippetsDir = file('build/generated-snippets')
 }
 
 dependencies {
@@ -85,6 +88,10 @@ dependencies {
     implementation 'net.devh:grpc-spring-boot-starter:3.1.0.RELEASE'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // REST Docs
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 }
 
 protobuf {
@@ -127,4 +134,43 @@ tasks.named('compileJava') {
 
 tasks.named('test') {
     useJUnitPlatform()
+    outputs.dir snippetsDir
+}
+
+// asciidoctor task 정의
+tasks.named('asciidoctor', org.asciidoctor.gradle.jvm.AsciidoctorTask) {
+    configurations 'asciidoctorExt'
+    baseDirFollowsSourceFile()
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+// asciidoctor 실행 전 static/docs 폴더 삭제
+tasks.named('asciidoctor').configure {
+    doFirst {
+        delete file('src/main/resources/static/docs')
+    }
+}
+
+// 문서 복사 task 추가
+tasks.register('copyDocument', Copy) {
+    dependsOn tasks.named('asciidoctor')
+    from file('build/docs/asciidoc')
+    into file('src/main/resources/static/docs')
+}
+
+// build 시 문서 복사까지 포함
+tasks.named('build') {
+    dependsOn tasks.named('copyDocument')
+}
+
+// ./gradlew regenerate-docs로 문서 재생성 가능하도록 묶음
+tasks.register('regenerate-docs') {
+    group = 'documentation'
+    description = 'Clean, test, generate REST Docs and copy to static resources.'
+
+    dependsOn 'clean'
+    dependsOn 'test'
+    dependsOn 'asciidoctor'
+    dependsOn 'copyDocument'
 }

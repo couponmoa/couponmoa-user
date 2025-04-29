@@ -13,6 +13,7 @@ import com.couponmoa.backend.couponmoauser.domain.user.service.v1.UserServiceV1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
@@ -26,11 +27,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserControllerV1.class)
+@AutoConfigureRestDocs
 @Import({SecurityConfig.class, JwtUtil.class})
 public class UserControllerV1Test {
 
@@ -63,7 +67,19 @@ public class UserControllerV1Test {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.id").value(userId))
                 .andExpect(jsonPath("$.data.email").value(email))
-                .andExpect(jsonPath("$.data.imageUrl").value(startsWith("https://couponmoa-user-profile.s3")));
+                .andExpect(jsonPath("$.data.imageUrl").value(startsWith("https://couponmoa-user-profile.s3")))
+                .andDo(document("user-get",
+                        responseFields(
+                                fieldWithPath("code").description("응답 코드"),
+                                fieldWithPath("status").description("응답 상태"),
+                                fieldWithPath("message").description("응답 메시지"),
+                                fieldWithPath("data.id").description("사용자 ID"),
+                                fieldWithPath("data.email").description("사용자 이메일"),
+                                fieldWithPath("data.nickname").description("사용자 이름"),
+                                fieldWithPath("data.userRole").description("사용자 권한 (ex: ROLE_USER)"),
+                                fieldWithPath("data.imageUrl").description("사용자 프로필 이미지 URL (S3 경로)")
+                        )
+                ));
     }
 
     @Test
@@ -79,7 +95,13 @@ public class UserControllerV1Test {
                         .header("X-User-Id", String.valueOf(userId))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userUpdateRequest)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(document("user-update-info",
+                        requestFields(
+                                fieldWithPath("email").description("변경할 이메일"),
+                                fieldWithPath("nickname").description("변경할 사용자 이름")
+                        )
+                ));
     }
 
     @Test
@@ -96,7 +118,13 @@ public class UserControllerV1Test {
                         .header("X-User-Id", String.valueOf(userId))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(document("user-update-password",
+                        requestFields(
+                                fieldWithPath("oldPassword").description("현재 비밀번호"),
+                                fieldWithPath("newPassword").description("변경할 새 비밀번호")
+                        )
+                ));
     }
 
     @Test
@@ -112,6 +140,11 @@ public class UserControllerV1Test {
                         .header("X-User-Id", String.valueOf(userId))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent())
+                .andDo(document("user-delete",
+                        requestFields(
+                                fieldWithPath("password").description("회원 탈퇴를 위한 비밀번호")
+                        )
+                ));
     }
 }
