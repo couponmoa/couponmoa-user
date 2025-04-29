@@ -1,0 +1,174 @@
+= CouponMoa User API 문서
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+---
+
+== 1. Auth API
+
+=== 1-1. 회원가입
+
+회원가입을 요청합니다.
+
+==== 요청 파라미터
+
+include::{snippets}/auth-signup/request-fields.adoc[]
+
+==== 요청 예시
+
+include::{snippets}/auth-signup/http-request.adoc[]
+
+==== 응답 예시
+
+include::{snippets}/auth-signup/http-response.adoc[]
+
+---
+
+=== 1-2. 로그인
+
+로그인을 요청합니다.
+
+==== 요청 파라미터
+
+include::{snippets}/auth-signin/request-fields.adoc[]
+
+==== 요청 예시
+
+include::{snippets}/auth-signin/http-request.adoc[]
+
+==== 응답 파라미터
+
+include::{snippets}/auth-signin/response-fields.adoc[]
+
+==== 응답 예시
+
+include::{snippets}/auth-signin/http-response.adoc[]
+
+---
+
+=== 1-3. 토큰 재발급
+
+리프레시 토큰으로 액세스 토큰을 재발급합니다.
+
+==== 요청 예시
+
+include::{snippets}/auth-refresh/http-request.adoc[]
+
+==== 응답 파라미터
+
+include::{snippets}/auth-refresh/response-fields.adoc[]
+
+==== 응답 예시
+
+include::{snippets}/auth-refresh/http-response.adoc[]
+
+---
+
+== 2. User API
+
+=== 2-1. 사용자 조회
+
+사용자 정보를 조회합니다.
+
+==== 요청 예시
+
+include::{snippets}/user-get/http-request.adoc[]
+
+==== 응답 파라미터
+
+include::{snippets}/user-get/response-fields.adoc[]
+
+==== 응답 예시
+
+include::{snippets}/user-get/http-response.adoc[]
+
+---
+
+=== 2-2. 사용자 정보 수정
+
+사용자 이메일과 이름을 수정합니다.
+
+==== 요청 파라미터
+
+include::{snippets}/user-update-info/request-fields.adoc[]
+
+==== 요청 예시
+
+include::{snippets}/user-update-info/http-request.adoc[]
+
+==== 응답 예시
+
+include::{snippets}/user-update-info/http-response.adoc[]
+
+---
+
+=== 2-3. 비밀번호 변경
+
+사용자 비밀번호를 변경합니다.
+
+==== 요청 파라미터
+
+include::{snippets}/user-update-password/request-fields.adoc[]
+
+==== 요청 예시
+
+include::{snippets}/user-update-password/http-request.adoc[]
+
+==== 응답 예시
+
+include::{snippets}/user-update-password/http-response.adoc[]
+
+---
+
+=== 2-4. 회원 탈퇴
+
+회원 탈퇴를 요청합니다.
+
+==== 요청 파라미터
+
+include::{snippets}/user-delete/request-fields.adoc[]
+
+==== 요청 예시
+
+include::{snippets}/user-delete/http-request.adoc[]
+
+==== 응답 예시
+
+include::{snippets}/user-delete/http-response.adoc[]
+
+---
+
+== 3. UserProfile API
+
+=== 3-1. 프로필 이미지 업로드
+
+프로필 이미지를 업로드합니다.
+
+==== 요청 파라미터 (Multipart)
+
+include::{snippets}/userprofile-upload/request-parts.adoc[]
+
+==== 요청 예시
+
+include::{snippets}/userprofile-upload/http-request.adoc[]
+
+==== 응답 예시
+
+include::{snippets}/userprofile-upload/http-response.adoc[]
+
+---
+
+=== 3-2. 프로필 이미지 삭제
+
+프로필 이미지를 삭제합니다.
+
+==== 요청 예시
+
+include::{snippets}/userprofile-delete/http-request.adoc[]
+
+==== 응답 예시
+
+include::{snippets}/userprofile-delete/http-response.adoc[]
+
+---
