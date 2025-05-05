@@ -1,4 +1,4 @@
-package com.couponmoa.backend.couponmoauser.domain.user.service.v1;
+package com.couponmoa.backend.couponmoauser.domain.user.service;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;

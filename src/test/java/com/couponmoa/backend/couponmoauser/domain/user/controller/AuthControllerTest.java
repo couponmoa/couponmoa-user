@@ -1,4 +1,4 @@
-package com.couponmoa.backend.couponmoauser.domain.user.controller.v1;
+package com.couponmoa.backend.couponmoauser.domain.user.controller;
 
 import com.couponmoa.backend.couponmoauser.common.service.RedisService;
 import com.couponmoa.backend.couponmoauser.config.JwtUtil;
@@ -6,7 +6,7 @@ import com.couponmoa.backend.couponmoauser.config.SecurityConfig;
 import com.couponmoa.backend.couponmoauser.domain.user.dto.request.SigninRequest;
 import com.couponmoa.backend.couponmoauser.domain.user.dto.request.SignupRequest;
 import com.couponmoa.backend.couponmoauser.domain.user.dto.response.TokenResponse;
-import com.couponmoa.backend.couponmoauser.domain.user.service.v1.AuthService;
+import com.couponmoa.backend.couponmoauser.domain.user.service.AuthService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

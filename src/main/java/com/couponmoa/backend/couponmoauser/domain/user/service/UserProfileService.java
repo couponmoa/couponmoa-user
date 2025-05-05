@@ -1,4 +1,4 @@
-package com.couponmoa.backend.couponmoauser.domain.user.service.v1;
+package com.couponmoa.backend.couponmoauser.domain.user.service;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
@@ -33,7 +33,7 @@ public class UserProfileService {
     private String bucketName;
 
     @Transactional
-    public void updateUserImage(Long userId, MultipartFile multipartFile) throws IOException {
+    public void updateUserImage(Long userId, MultipartFile multipartFile) {
         User user = getUserById(userId);
         String userImageKey = uploadImageToS3(multipartFile);
 
@@ -59,16 +59,19 @@ public class UserProfileService {
         return userRepository.findByIdOrElseThrow(userId, ErrorCode.USER_NOT_FOUND);
     }
 
-    private String uploadImageToS3(MultipartFile multipartFile) throws IOException {
+    private String uploadImageToS3(MultipartFile multipartFile) {
         String originalFilename = multipartFile.getOriginalFilename();
         String s3FileName = "image/" + UUID.randomUUID() + "_" + originalFilename;
 
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(multipartFile.getContentType());
         metadata.setContentLength(multipartFile.getSize());
-        InputStream inputStream = multipartFile.getInputStream();
-        try {
+
+        try (InputStream inputStream = multipartFile.getInputStream()) {
             amazonS3.putObject(new PutObjectRequest(bucketName, s3FileName, inputStream, metadata));
+        } catch (IOException e) {
+            log.error("파일을 S3에 업로드하는 중 입출력 오류 발생: {}", e.getMessage());
+            throw new ApplicationException(ErrorCode.S3_SERVICE_ERROR);
         } catch (AmazonServiceException e) {
             log.error("AWS S3 서비스 오류: {}", e.getErrorMessage());
             throw new ApplicationException(ErrorCode.S3_SERVICE_ERROR);
@@ -76,6 +79,7 @@ public class UserProfileService {
             log.error("AWS S3 클라이언트 오류: {}", e.getMessage());
             throw new ApplicationException(ErrorCode.S3_CLIENT_ERROR);
         }
+
         return s3FileName;
     }
 }

@@ -1,7 +1,7 @@
 package com.couponmoa.backend.couponmoauser.domain.user.grpc;
 import com.couponmoa.backend.couponmoauser.domain.user.entity.User;
 import com.couponmoa.backend.couponmoauser.domain.user.repository.UserRepository;
-import com.couponmoa.backend.couponmoauser.domain.user.service.v1.UserServiceV1;
+import com.couponmoa.backend.couponmoauser.domain.user.service.UserServiceV1;
 import com.couponmoa.grpc.user.*;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
