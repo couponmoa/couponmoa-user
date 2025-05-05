@@ -1,4 +1,4 @@
-package com.couponmoa.backend.couponmoauser.domain.user.controller.v1;
+package com.couponmoa.backend.couponmoauser.domain.user.controller;
 
 import com.couponmoa.backend.couponmoauser.common.service.RedisService;
 import com.couponmoa.backend.couponmoauser.config.JwtUtil;
@@ -9,7 +9,7 @@ import com.couponmoa.backend.couponmoauser.domain.user.dto.request.UserUpdateReq
 import com.couponmoa.backend.couponmoauser.domain.user.dto.response.UserResponse;
 import com.couponmoa.backend.couponmoauser.domain.user.entity.User;
 import com.couponmoa.backend.couponmoauser.domain.user.enums.UserRole;
-import com.couponmoa.backend.couponmoauser.domain.user.service.v1.UserServiceV1;
+import com.couponmoa.backend.couponmoauser.domain.user.service.UserServiceV1;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
